@@ -1,4 +1,4 @@
-package main
+package entriesresources
 
 import (
 	"archive/tar"
@@ -36,6 +36,7 @@ func untar(src string) ([]string, error) {
 	// 将 tar 包打开
 	fr, err := os.Open(src)
 	errPrintln(err)
+	// 处理完成之后关闭文件流
 	defer fr.Close()
 
 	// 通过 fr 创建一个 tar.*Reader 结构，然后将 tr 遍历，并将数据保存到磁盘中
@@ -66,11 +67,11 @@ func untar(src string) ([]string, error) {
 	return filenames, nil
 }
 
+// 根据链接下载黑绒
 func downloadFromURL(url string) string {
-	// return "hello"
 	tokens := strings.Split(url, "/")
 	fileName := tokens[len(tokens)-1]
-	// fmt.Println("file exixxxxst")
+
 	// 判断文件是否已经存在
 	if fileExists(fileName) {
 		// 文件已经存在，不进行任何操作
@@ -105,10 +106,11 @@ func downloadFromURL(url string) string {
 	return fileName
 }
 
-func init() {
+func GoSame() {
+
 	// 下载实体文件
 	var url = "https://sylvan.apple.com/Aerials/resources.tar"
 	srcfile := downloadFromURL(url)
 	fmt.Println(srcfile)
-	untar(srcfile)
+	// untar(srcfile)
 }

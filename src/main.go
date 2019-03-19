@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	// "entries_resources"
+
+	"./pack"
 )
 
 func main() {
+	entriesresources.GoSame()
 	fmt.Printf("Hello, worldxxx\n")
 }
