@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
+	// "entries_resources"
 )
 
 func main() {
-	fmt.Printf("Hello, world\n")
+	fmt.Printf("Hello, worldxxx\n")
 }

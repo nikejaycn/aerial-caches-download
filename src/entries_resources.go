@@ -54,7 +54,7 @@ func untar(src string) ([]string, error) {
 		// 将 tr 写入到 fw
 		n, err := io.Copy(fw, tr)
 		errPrintln(err)
-		log.Printf("解包： %s 到 %s ，共处理了 %d 个字符的数据。", srcFile, fi.Name(), n)
+		log.Printf("解包： %s 到 %s ，共处理了 %d 个字符的数据。", src, fi.Name(), n)
 
 		// 设置文件权限，这样可以保证和原始文件权限相同，如果不设置，会根据当前系统的 umask 来设置。
 		os.Chmod(fi.Name(), fi.Mode().Perm())
@@ -67,9 +67,10 @@ func untar(src string) ([]string, error) {
 }
 
 func downloadFromURL(url string) string {
+	// return "hello"
 	tokens := strings.Split(url, "/")
 	fileName := tokens[len(tokens)-1]
-	fmt.Println("file exixxxxst")
+	// fmt.Println("file exixxxxst")
 	// 判断文件是否已经存在
 	if fileExists(fileName) {
 		// 文件已经存在，不进行任何操作
@@ -104,10 +105,10 @@ func downloadFromURL(url string) string {
 	return fileName
 }
 
-func main() {
+func init() {
 	// 下载实体文件
 	var url = "https://sylvan.apple.com/Aerials/resources.tar"
 	srcfile := downloadFromURL(url)
 	fmt.Println(srcfile)
-	// untar(srcfile)
+	untar(srcfile)
 }
