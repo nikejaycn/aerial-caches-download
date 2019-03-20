@@ -1,12 +1,10 @@
 package main
 
 import (
-	"fmt"
-
 	"./pack"
 )
 
 func main() {
-	entriesresources.GoSame()
-	fmt.Printf("Hello, worldxxx\n")
+	entriesresources.Download()
+	// fmt.Printf("Hello, worldxxx\n")
 }
