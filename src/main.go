@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
-
 	"./pack"
 )
 
 func main() {
-	entriesresources.Download()
-	// entriesresources.Do()
-	fmt.Printf("Hello, worldxxx\n")
+	// entriesresources.Download()
+	entriesresources.HandleRetries("./temp/entries.json")
+	// fmt.Printf("Hello, worldxxx\n")
 }
