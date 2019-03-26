@@ -94,6 +94,30 @@ func unDirTar(dst, src string) (err error) {
 	return nil
 }
 
+// WriteCounter counts the number of bytes written to it. It implements to the io.Writer
+// interface and we can pass this into io.TeeReader() which will report progress on each
+// write cycle.
+type WriteCounter struct {
+	Total uint64
+}
+
+func (wc *WriteCounter) Write(p []byte) (int, error) {
+	n := len(p)
+	wc.Total += uint64(n)
+	wc.PrintProgress()
+	return n, nil
+}
+
+func (wc WriteCounter) PrintProgress() {
+	// Clear the line by using a character return to go back to the start and remove
+	// the remaining characters by filling it with spaces
+	fmt.Printf("\r%s", strings.Repeat(" ", 35))
+
+	// Return again and print current status of download
+	// We use the humanize package to print the bytes in a meaningful way (e.g. 10 MB)
+	fmt.Printf("\rDownloading... %d MB complete", wc.Total/1024/1024)
+}
+
 // 判断目录是否存在
 func existDir(dirname string) bool {
 	fileinfo, err := os.Stat(dirname)
@@ -117,7 +141,7 @@ func getCurrentPath(src string) (string, error) {
 }
 
 // 根据链接下载视频
-func downloadFromURL(url string) string {
+func DownloadFromURL(url string) string {
 	tokens := strings.Split(url, "/")
 	fileName := tokens[len(tokens)-1]
 
@@ -145,6 +169,14 @@ func downloadFromURL(url string) string {
 	}
 	defer response.Body.Close()
 
+	// 实现下载过程中显示进度
+	counter := &WriteCounter{}
+	_, err = io.Copy(output, io.TeeReader(response.Body, counter))
+	if err != nil {
+		fmt.Println("Error while TeeReader", fileName, "-", err)
+		return fileName
+	}
+
 	n, err := io.Copy(output, response.Body)
 	if err != nil {
 		fmt.Println("Error while downloading", url, "-", err)
@@ -159,7 +191,7 @@ func Download() {
 
 	// 下载实体文件
 	var url = "https://sylvan.apple.com/Aerials/resources.tar"
-	srcfile := downloadFromURL(url)
+	srcfile := DownloadFromURL(url)
 	// fmt.Println(filepath.Abs(srcfile))
 
 	// 获取当前目录

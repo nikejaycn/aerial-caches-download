@@ -2,7 +2,6 @@ package entriesresources
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 )
 
@@ -22,7 +21,7 @@ type Asset struct {
 	Url4KSDR           string `json:"url-4K-SDR"`
 }
 
-func HandleRetries(path string) {
+func HandleRetries(path string) (entrie Entries) {
 	// fmt.Printf(path)
 	// entriesresources.Test()
 	file, _ := ioutil.ReadFile(path)
@@ -31,14 +30,16 @@ func HandleRetries(path string) {
 
 	// JSON 读取
 	_ = json.Unmarshal([]byte(file), &data)
-	fmt.Println(len(data.Assets))
 
-	fmt.Println(data.Assets[0].AccessibilityLabel)
-	fmt.Println(data.Assets[0].Url1080H264)
-	fmt.Println(data.Assets[0].Url1080HDR)
-	fmt.Println(data.Assets[0].Url1080SDR)
-	fmt.Println(data.Assets[0].Url4KHDR)
-	fmt.Println(data.Assets[0].Url4KSDR)
+	return data
+	// fmt.Println(len(data.Assets))
+
+	// fmt.Println(data.Assets[0].AccessibilityLabel)
+	// fmt.Println(data.Assets[0].Url1080H264)
+	// fmt.Println(data.Assets[0].Url1080HDR)
+	// fmt.Println(data.Assets[0].Url1080SDR)
+	// fmt.Println(data.Assets[0].Url4KHDR)
+	// fmt.Println(data.Assets[0].Url4KSDR)
 
 	// 测试打印所有下载链接
 	// for i := 0; i < len(data.Assets); i++ {
